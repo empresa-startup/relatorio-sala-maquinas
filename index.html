@@ -65,8 +65,9 @@
 
         .tabela th, .tabela td {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 10px 12px;
             font-size: 14px;
+            vertical-align: middle;
         }
 
         .tabela th {
@@ -74,6 +75,29 @@
             color: #0F2B48;
             text-align: left;
             width: 40%;
+        }
+
+        /* ✅ ALINHAMENTO PERFEITO DOS RADIO BUTTONS */
+        .tabela td .linha-opcao {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 4px 0;
+        }
+
+        .tabela td input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .tabela td label {
+            margin: 0;
+            padding: 0;
+            line-height: 18px;
+            cursor: pointer;
         }
 
         .tabela input, .tabela select, .tabela textarea {
@@ -138,6 +162,7 @@
             height: 20px;
             cursor: pointer;
             margin-right: 6px;
+            vertical-align: middle;
         }
 
         .status-grid {
@@ -169,6 +194,9 @@
         }
 
         .status-opcoes label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
@@ -177,6 +205,12 @@
 
         .status-opcoes label:hover {
             background: #dde4eb;
+        }
+
+        .status-opcoes input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
         }
 
         .area-fotos {
@@ -259,13 +293,12 @@
         @media print {
             body { 
                 background: #fff; 
-                -webkit-print-color-adjust: exact; /* ✅ Mantém cores no Chrome/Edge */
-                print-color-adjust: exact;         /* ✅ Mantém cores em todos os navegadores */
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             .botoes { display: none !important; }
             .container { box-shadow: none; border-radius: 0; }
 
-            /* ✅ Mantém os quadros coloridos dos cards de degelo no PDF */
             .degelo-card {
                 border: 2px solid #666 !important;
                 background: #fff !important;
@@ -278,7 +311,6 @@
                 print-color-adjust: exact;
             }
 
-            /* ✅ Mantém os quadros das bombas e compressores no PDF */
             .status-card {
                 border: 1px solid #999 !important;
                 background: #f4f7fa !important;
@@ -286,7 +318,6 @@
                 print-color-adjust: exact;
             }
 
-            /* ✅ Mantém os quadros de setores no PDF */
             .bloco-cat {
                 border: 1px solid #999 !important;
                 background: #f4f7fa !important;
@@ -294,7 +325,6 @@
                 print-color-adjust: exact;
             }
 
-            /* ✅ Esconde só o botão de escolher arquivo, mantém a imagem */
             .foto-caixa input[type="file"] { display: none !important; }
             .foto-caixa { 
                 border: 1px solid #ccc !important; 
@@ -303,14 +333,12 @@
             }
             .foto-caixa img { max-height: 160px; }
 
-            /* ✅ Mantém cores das tabelas */
             .tabela th {
                 background: #e8edf2 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
-            /* ✅ Força quebra de página adequada */
             .secao {
                 page-break-inside: avoid;
             }
@@ -547,23 +575,25 @@
     <div class="secao">
         <h2>⚠️ Ficha de Ocorrência de Turno</h2>
         <table class="tabela">
-            <tr><th>📅 Data do Registro</th><td><input type="date"></td></tr>
-            <tr><th>⏰ Hora da Ocorrência</th><td><input type="time"></td></tr>
-            <tr><th>🔧 Setor / Equipamento Afetado</th><td><input type="text"></td></tr>
-            <tr><th>📝 Descrição do Desvio Encontrado</th><td><textarea></textarea></td></tr>
-            <tr><th>⚠️ Gravidade</th><td>
-                <label><input type="radio" name="gravidade"> Baixa</label> &nbsp;
-                <label><input type="radio" name="gravidade"> Média</label> &nbsp;
-                <label><input type="radio" name="gravidade"> Alta</label> &nbsp;
-                <label><input type="radio" name="gravidade"> Crítica</label>
-            </td></tr>
+            <tr>
+                <th>⚠️ Gravidade</th>
+                <td>
+                    <div class="linha-opcao"><input type="radio" name="gravidade" id="grav-baixa"><label for="grav-baixa">Baixa</label></div>
+                    <div class="linha-opcao"><input type="radio" name="gravidade" id="grav-media"><label for="grav-media">Média</label></div>
+                    <div class="linha-opcao"><input type="radio" name="gravidade" id="grav-alta"><label for="grav-alta">Alta</label></div>
+                    <div class="linha-opcao"><input type="radio" name="gravidade" id="grav-critica"><label for="grav-critica">Crítica</label></div>
+                </td>
+            </tr>
             <tr><th>👤 Registrado por</th><td><input type="text"></td></tr>
             <tr><th>🛠️ Ação Tomada / Correção</th><td><textarea></textarea></td></tr>
-            <tr><th>✅ Situação</th><td>
-                <label><input type="radio" name="situacao"> Em Andamento</label> &nbsp;
-                <label><input type="radio" name="situacao"> Resolvido</label> &nbsp;
-                <label><input type="radio" name="situacao"> Pendente</label>
-            </td></tr>
+            <tr>
+                <th>✅ Situação</th>
+                <td>
+                    <div class="linha-opcao"><input type="radio" name="situacao" id="sit-andamento"><label for="sit-andamento">Em Andamento</label></div>
+                    <div class="linha-opcao"><input type="radio" name="situacao" id="sit-resolvido"><label for="sit-resolvido">Resolvido</label></div>
+                    <div class="linha-opcao"><input type="radio" name="situacao" id="sit-pendente"><label for="sit-pendente">Pendente</label></div>
+                </td>
+            </tr>
         </table>
 
         <h3 style="margin:15px 0 10px; color:#0F2B48;">📸 Fotos / Evidências</h3>
