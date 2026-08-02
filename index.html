@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório – Sala de Máquinas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Calibri, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cabecalho {
+            background: #0F2B48;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cabecalho h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .cabecalho p {
+            opacity: 0.85;
+            font-size: 14px;
+        }
+
+        .secao {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .secao h2 {
+            color: #0F2B48;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2E7D32;
+            padding-left: 10px;
+        }
+
+        .tabela {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .tabela th, .tabela td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .tabela th {
+            background: #e8edf2;
+            color: #0F2B48;
+            text-align: left;
+            width: 40%;
+        }
+
+        .tabela input, .tabela select, .tabela textarea {
+            width: 100%;
+            border: 1px solid #bbb;
+            padding: 6px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .tabela textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .grid-equip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .bloco-cat {
+            background: #f4f7fa;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #dde4eb;
+        }
+
+        .bloco-cat strong {
+            color: #0F2B48;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .degelo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .degelo-card {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+
+        .degelo-card.checked {
+            border-color: #2E7D32;
+            background: #e8f5e9;
+            color: #1B5E20;
+            font-weight: 600;
+        }
+
+        .degelo-card input {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .status-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 12px;
+            background: #f4f7fa;
+        }
+
+        .status-card strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #0F2B48;
+            font-size: 15px;
+        }
+
+        .status-opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 13px;
+        }
+
+        .status-opcoes label {
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .status-opcoes label:hover {
+            background: #dde4eb;
+        }
+
+        .area-fotos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .foto-caixa {
+            border: 2px dashed #999;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            background: #fafafa;
+        }
+
+        .foto-caixa input[type="file"] {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .foto-caixa img {
+            max-width: 100%;
+            max-height: 140px;
+            border-radius: 4px;
+            margin-top: 5px;
+            display: block;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        .rodape {
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+
+        .desenvolvedor {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #555;
+            font-style: italic;
+        }
+
+        .botoes {
+            text-align: center;
+            padding: 15px;
+            background: #f4f7fa;
+        }
+
+        button {
+            background: #0F2B48;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 15px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #193d66;
+        }
+
+        /* ================================================= */
+        /* ✅ REGRAS DE IMPRESSÃO — MANTÉM AS CORES E QUADROS NO PDF */
+        /* ================================================= */
+        @media print {
+            body { 
+                background: #fff; 
+                -webkit-print-color-adjust: exact; /* ✅ Mantém cores no Chrome/Edge */
+                print-color-adjust: exact;         /* ✅ Mantém cores em todos os navegadores */
+            }
+            .botoes { display: none !important; }
+            .container { box-shadow: none; border-radius: 0; }
+
+            /* ✅ Mantém os quadros coloridos dos cards de degelo no PDF */
+            .degelo-card {
+                border: 2px solid #666 !important;
+                background: #fff !important;
+            }
+            .degelo-card.checked {
+                border-color: #2E7D32 !important;
+                background: #e8f5e9 !important;
+                color: #1B5E20 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ✅ Mantém os quadros das bombas e compressores no PDF */
+            .status-card {
+                border: 1px solid #999 !important;
+                background: #f4f7fa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ✅ Mantém os quadros de setores no PDF */
+            .bloco-cat {
+                border: 1px solid #999 !important;
+                background: #f4f7fa !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ✅ Esconde só o botão de escolher arquivo, mantém a imagem */
+            .foto-caixa input[type="file"] { display: none !important; }
+            .foto-caixa { 
+                border: 1px solid #ccc !important; 
+                min-height: auto;
+                background: #fff !important;
+            }
+            .foto-caixa img { max-height: 160px; }
+
+            /* ✅ Mantém cores das tabelas */
+            .tabela th {
+                background: #e8edf2 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ✅ Força quebra de página adequada */
+            .secao {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- CABEÇALHO -->
+    <div class="cabecalho">
+        <h1>📋 RELATÓRIO – SALA DE MÁQUINAS</h1>
+        <p>Controle de Inspeções, Equipamentos, Degelo e Ocorrências</p>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="botoes">
+        <button onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+        <button onclick="limparFormulario()">🔄 Limpar Campos</button>
+    </div>
+
+    <!-- MÓDULO 1 – EQUIPAMENTOS E SETORES -->
+    <div class="secao">
+        <h2>📦 Lista de Equipamentos e Setores</h2>
+        <div class="grid-equip">
+            <div class="bloco-cat">
+                <strong>🚇 Túneis</strong>
+                Túnel 1 · Túnel 2 · Túnel 3 · Túnel 6
+            </div>
+            <div class="bloco-cat">
+                <strong>❄️ Câmeras Frias</strong>
+                Câmera 1 · Câmera 2 · Câmera 3 · Câmera 4 · Câmera 5 · Câmera 6 · Câmera 7 · Câmera 8 · Câmera 9
+            </div>
+            <div class="bloco-cat">
+                <strong>🏭 Setores de Processo</strong>
+                Estocagem · Sequestro · Triagem · Desossa · Exp. Caixas · Corredor 1 e 2 · Emb. Sec. Desossa · Exp. Carcaça · Sala de Corte · Sala de Moagem
+            </div>
+        </div>
+    </div>
+
+    <!-- BOMBAS DE AMÔNIA – COM STATUS -->
+    <div class="secao">
+        <h2>🧪 Bombas de Amônia – Situação</h2>
+        <div class="status-grid">
+            <div class="status-card">
+                <strong>Baixa #1 (35°C)</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="bomba-baixa1"> Em Funcionamento</label>
+                    <label><input type="radio" name="bomba-baixa1"> Reserva</label>
+                    <label><input type="radio" name="bomba-baixa1"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card">
+                <strong>Baixa #2 (35°C)</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="bomba-baixa2"> Em Funcionamento</label>
+                    <label><input type="radio" name="bomba-baixa2"> Reserva</label>
+                    <label><input type="radio" name="bomba-baixa2"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card">
+                <strong>Alta #1 (10°C)</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="bomba-alta1"> Em Funcionamento</label>
+                    <label><input type="radio" name="bomba-alta1"> Reserva</label>
+                    <label><input type="radio" name="bomba-alta1"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card">
+                <strong>Alta #2 (10°C)</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="bomba-alta2"> Em Funcionamento</label>
+                    <label><input type="radio" name="bomba-alta2"> Reserva</label>
+                    <label><input type="radio" name="bomba-alta2"> Manutenção</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPRESSORES – COM STATUS -->
+    <div class="secao">
+        <h2>⚙️ Compressores – Situação</h2>
+        <div class="status-grid">
+            <div class="status-card"><strong>Compressor 1</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="comp1"> Em Funcionamento</label>
+                    <label><input type="radio" name="comp1"> Reserva</label>
+                    <label><input type="radio" name="comp1"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card"><strong>Compressor 2</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="comp2"> Em Funcionamento</label>
+                    <label><input type="radio" name="comp2"> Reserva</label>
+                    <label><input type="radio" name="comp2"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card"><strong>Compressor 3</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="comp3"> Em Funcionamento</label>
+                    <label><input type="radio" name="comp3"> Reserva</label>
+                    <label><input type="radio" name="comp3"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card"><strong>Compressor 4</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="comp4"> Em Funcionamento</label>
+                    <label><input type="radio" name="comp4"> Reserva</label>
+                    <label><input type="radio" name="comp4"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card"><strong>Compressor 5</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="comp5"> Em Funcionamento</label>
+                    <label><input type="radio" name="comp5"> Reserva</label>
+                    <label><input type="radio" name="comp5"> Manutenção</label>
+                </div>
+            </div>
+            <div class="status-card"><strong>Compressor 6</strong>
+                <div class="status-opcoes">
+                    <label><input type="radio" name="comp6"> Em Funcionamento</label>
+                    <label><input type="radio" name="comp6"> Reserva</label>
+                    <label><input type="radio" name="comp6"> Manutenção</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTROLE DE DEGELO – ESTOCAGEM E TRIAGEM INCLUÍDOS -->
+    <div class="secao">
+        <h2>🧊 Controle de Degelo – Marque os Realizados</h2>
+        <p style="color:#555; font-size:14px; margin-bottom:5px;">Clique para marcar/desmarcar quais setores passaram por degelo:</p>
+
+        <h3 style="margin:12px 0 5px; color:#0F2B48;">🚇 Túneis</h3>
+        <div class="degelo-grid">
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Túnel 1
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Túnel 2
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Túnel 3
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Túnel 6
+            </label>
+        </div>
+
+        <h3 style="margin:20px 0 5px; color:#0F2B48;">❄️ Câmeras Frias</h3>
+        <div class="degelo-grid">
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 1
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 2
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 3
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 4
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 5
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 6
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 7
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 8
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Câmera 9
+            </label>
+        </div>
+
+        <h3 style="margin:20px 0 5px; color:#0F2B48;">🏭 Outros Setores</h3>
+        <div class="degelo-grid">
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Estocagem
+            </label>
+            <label class="degelo-card">
+                <input type="checkbox" onchange="marcarCard(this)"> Triagem
+            </label>
+        </div>
+    </div>
+
+    <!-- INSPEÇÃO DE CÂMERAS -->
+    <div class="secao">
+        <h2>🌡️ Inspeção de Câmeras Frias</h2>
+        <table class="tabela">
+            <tr><th>Número da Câmera</th><td><input type="text" placeholder="Ex: 1, 2, 3..."></td></tr>
+            <tr><th>📅 Data</th><td><input type="date"></td></tr>
+            <tr><th>⏰ Hora de Início</th><td><input type="time"></td></tr>
+            <tr><th>⏱️ Hora de Término</th><td><input type="time"></td></tr>
+            <tr><th>🌡️ Temperatura Inicial (°C)</th><td><input type="number" step="0.1" placeholder="00.0"></td></tr>
+            <tr><th>🌡️ Temperatura Final (°C)</th><td><input type="number" step="0.1" placeholder="00.0"></td></tr>
+            <tr><th>💧 Temperatura Saída d'Água (°C)</th><td><input type="number" step="0.1" placeholder="00.0"></td></tr>
+            <tr><th>📋 Nº da Receita Utilizada</th><td><input type="text"></td></tr>
+            <tr><th>👤 Iniciada por (Operador)</th><td><input type="text"></td></tr>
+            <tr><th>✅ Finalizada por (Operador)</th><td><input type="text"></td></tr>
+            <tr><th>📝 Observações</th><td><textarea></textarea></td></tr>
+        </table>
+    </div>
+
+    <!-- COMPLEMENTAÇÃO DE ÓLEO -->
+    <div class="secao">
+        <h2>🛢️ Registro de Complementação de Óleo</h2>
+        <table class="tabela">
+            <tr><th>📅 Data</th><td><input type="date"></td></tr>
+            <tr><th>⏰ Hora</th><td><input type="time"></td></tr>
+            <tr><th>⚙️ Compressor</th><td>
+                <select>
+                    <option value="">Selecione...</option>
+                    <option>Compressor 1</option>
+                    <option>Compressor 2</option>
+                    <option>Compressor 3</option>
+                    <option>Compressor 4</option>
+                    <option>Compressor 5</option>
+                    <option>Compressor 6</option>
+                </select>
+            </td></tr>
+            <tr><th>👤 Operador Responsável</th><td><input type="text"></td></tr>
+            <tr><th>✅ Conferido por</th><td><input type="text"></td></tr>
+            <tr><th>📝 Observações</th><td><textarea></textarea></td></tr>
+        </table>
+    </div>
+
+    <!-- OCORRÊNCIA COM FOTOS -->
+    <div class="secao">
+        <h2>⚠️ Ficha de Ocorrência de Turno</h2>
+        <table class="tabela">
+            <tr><th>📅 Data do Registro</th><td><input type="date"></td></tr>
+            <tr><th>⏰ Hora da Ocorrência</th><td><input type="time"></td></tr>
+            <tr><th>🔧 Setor / Equipamento Afetado</th><td><input type="text"></td></tr>
+            <tr><th>📝 Descrição do Desvio Encontrado</th><td><textarea></textarea></td></tr>
+            <tr><th>⚠️ Gravidade</th><td>
+                <label><input type="radio" name="gravidade"> Baixa</label> &nbsp;
+                <label><input type="radio" name="gravidade"> Média</label> &nbsp;
+                <label><input type="radio" name="gravidade"> Alta</label> &nbsp;
+                <label><input type="radio" name="gravidade"> Crítica</label>
+            </td></tr>
+            <tr><th>👤 Registrado por</th><td><input type="text"></td></tr>
+            <tr><th>🛠️ Ação Tomada / Correção</th><td><textarea></textarea></td></tr>
+            <tr><th>✅ Situação</th><td>
+                <label><input type="radio" name="situacao"> Em Andamento</label> &nbsp;
+                <label><input type="radio" name="situacao"> Resolvido</label> &nbsp;
+                <label><input type="radio" name="situacao"> Pendente</label>
+            </td></tr>
+        </table>
+
+        <h3 style="margin:15px 0 10px; color:#0F2B48;">📸 Fotos / Evidências</h3>
+        <div class="area-fotos">
+            <div class="foto-caixa">
+                📷 Foto 1
+                <input type="file" accept="image/*" onchange="exibirImagem(this, 1)">
+                <img id="img1" src="" alt="">
+            </div>
+            <div class="foto-caixa">
+                📷 Foto 2
+                <input type="file" accept="image/*" onchange="exibirImagem(this, 2)">
+                <img id="img2" src="" alt="">
+            </div>
+            <div class="foto-caixa">
+                📷 Foto 3
+                <input type="file" accept="image/*" onchange="exibirImagem(this, 3)">
+                <img id="img3" src="" alt="">
+            </div>
+            <div class="foto-caixa">
+                📷 Foto 4
+                <input type="file" accept="image/*" onchange="exibirImagem(this, 4)">
+                <img id="img4" src="" alt="">
+            </div>
+        </div>
+        <table class="tabela" style="margin-top:15px;">
+            <tr><th>📝 Observações sobre as fotos</th><td><textarea></textarea></td></tr>
+        </table>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div class="rodape">
+        <p>_______________________________________ &nbsp;&nbsp; _______________________________________</p>
+        <p>Assinatura do Operador &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assinatura do Supervisor</p>
+        <p class="desenvolvedor">Sistema desenvolvido por José Leandro</p>
+    </div>
+</div>
+
+<script>
+function marcarCard(checkbox) {
+    const card = checkbox.parentElement;
+    if (checkbox.checked) {
+        card.classList.add('checked');
+    } else {
+        card.classList.remove('checked');
+    }
+}
+
+function exibirImagem(input, numero) {
+    if (input.files && input.files[0]) {
+        const leitor = new FileReader();
+        leitor.onload = function(e) {
+            const img = document.getElementById('img' + numero);
+            img.src = e.target.result;
+        };
+        leitor.readAsDataURL(input.files[0]);
+    }
+}
+
+function limparFormulario() {
+    if(confirm('Deseja limpar todos os campos?')) {
+        location.reload();
+    }
+}
+</script>
+
+</body>
+</html>
